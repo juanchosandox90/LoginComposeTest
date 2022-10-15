@@ -184,7 +184,15 @@ fun ForgotPassword(modifier: Modifier) {
 @Composable
 fun LoginButton(loginEnable: Boolean) {
 	Button(
-		onClick = { }, enabled = loginEnable, modifier = Modifier.fillMaxWidth()
+		onClick = { },
+		enabled = loginEnable,
+		modifier = Modifier.fillMaxWidth(),
+		colors = ButtonDefaults.buttonColors(
+			backgroundColor = Color(0xFF00A3FC),
+			disabledBackgroundColor = Color(0xFF88D0F7),
+			contentColor = Color.White,
+			disabledContentColor = Color.White
+		)
 	) {
 		Text("Log In")
 	}
