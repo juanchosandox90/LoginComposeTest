@@ -3,9 +3,12 @@ package com.sandoval.logincomposetest
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -83,7 +89,7 @@ fun SignUp() {
 	Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
 		Text(
 			text = "Don't have an account?",
-			fontSize = 12.sp, 
+			fontSize = 12.sp,
 			color = Color(0XFFB5B5B5),
 			fontWeight = FontWeight.Medium
 		)
@@ -113,18 +119,54 @@ fun EmailLogin(email: String, onEmailChange: (String) -> Unit) {
 		onValueChange = { onEmailChange(it) },
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(4.dp)
+			.padding(4.dp),
+		placeholder = { Text(text = "Email") },
+		maxLines = 1,
+		singleLine = true,
+		keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+		colors = TextFieldDefaults.textFieldColors(
+			textColor = Color(0xFFB2B2B2),
+			backgroundColor = Color(0xFFF5F5F5),
+			focusedIndicatorColor = Color.Transparent,
+			unfocusedIndicatorColor = Color.Transparent
+		)
 	)
 }
 
 @Composable
 fun PasswordLogin(password: String, onPasswordChange: (String) -> Unit) {
+	var passwordVisibility by rememberSaveable { mutableStateOf(false) }
 	TextField(
 		value = password,
 		onValueChange = { onPasswordChange(it) },
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(4.dp)
+			.padding(4.dp),
+		placeholder = { Text(text = "Password") },
+		maxLines = 1,
+		singleLine = true,
+		keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+		colors = TextFieldDefaults.textFieldColors(
+			textColor = Color(0xFFB2B2B2),
+			backgroundColor = Color(0xFFF5F5F5),
+			focusedIndicatorColor = Color.Transparent,
+			unfocusedIndicatorColor = Color.Transparent
+		),
+		trailingIcon = {
+			val image = if (passwordVisibility) {
+				Icons.Filled.VisibilityOff
+			} else {
+				Icons.Filled.Visibility
+			}
+			IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+				Icon(imageVector = image, contentDescription = "Show password image")
+			}
+		},
+		visualTransformation = if (passwordVisibility) {
+			VisualTransformation.None
+		} else {
+			PasswordVisualTransformation()
+		}
 	)
 }
 
